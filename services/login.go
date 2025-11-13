@@ -15,6 +15,8 @@ func NewLoginService(repo *repositories.UserRepository) *LoginService {
 	return &LoginService{repo: repo}
 }
 
+
+
 // Login method
 func (s *LoginService) Login(email, password string) (models.User, error) {
 	user, err := s.repo.GetByEmail(email)

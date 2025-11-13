@@ -14,6 +14,8 @@ func NewFileAnalyzerRepository(db *sql.DB) *FileAnalyzerRepository {
     return &FileAnalyzerRepository{DB: db}
 }
 
+
+
 // Insert file analysis record
 func (repo *FileAnalyzerRepository) InsertFileInfo(file models.FileInfo) error {
     query := `
