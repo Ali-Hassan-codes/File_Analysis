@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+
 	"github.com/ali-hassan-Codes/file_analyzer_2/models"
 )
 
@@ -11,6 +12,10 @@ type LoginRepository struct {
 
 func NewLoginRepository(db *sql.DB) *LoginRepository {
 	return &LoginRepository{DB: db}
+}
+
+type LoginRepoInterface interface {
+	GetByEmail(email string) (*models.User, error)
 }
 
 // Get user by email (for login)

@@ -9,7 +9,8 @@ import (
 )
 
 func InitDb() *sql.DB {
-    src := "root:@tcp(127.0.0.1:3306)/three_layer?parseTime=true"
+src := "ali:1234@tcp(db:3306)/mydb?parseTime=true"
+
     db, err := sql.Open("mysql", src)
     if err != nil {
         log.Fatal("Failed to open database:", err)

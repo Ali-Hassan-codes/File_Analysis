@@ -13,7 +13,6 @@ import (
 func StartServer() {
 	database := db.InitDb()
 
-	// User service
 	userRepo := repositories.NewUserRepository(database)
 	userService := services.NewSignupService(userRepo)
 

@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ali
+      DB_PASSWORD: 1234
+      DB_NAME: mydb
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: ali
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+volumes:
+  mysqldata: {}   # <-- This defines the volume
