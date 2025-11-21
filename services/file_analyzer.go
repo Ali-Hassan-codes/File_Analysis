@@ -10,6 +10,11 @@ import (
 	"github.com/ali-hassan-Codes/file_analyzer_2/repositories"
 )
 
+type IFileAnalyzerService interface {
+	AnalyzeFile(filePath string) (models.FileInfo, error)
+}
+
+// Service
 type FileAnalyzerService struct {
 	repo *repositories.FileAnalyzerRepository
 }
@@ -80,7 +85,7 @@ func (s *FileAnalyzerService) AnalyzeFile(filePath string) (models.FileInfo, err
 		NonVowels:  nonVowelCount,
 	}
 
-	// Save to database
+	// Save to DB
 	err = s.repo.InsertFileInfo(fileInfo)
 	if err != nil {
 		return models.FileInfo{}, err

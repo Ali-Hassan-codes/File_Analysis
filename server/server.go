@@ -25,9 +25,7 @@ func StartServer() {
 
 	engine := gin.Default()
 
-	// Router
-	r := routes.NewRouter(engine, userService, loginService, fileService)
-	r.DefineRoutes()
+	routes.NewRouter(engine, userService, loginService, fileService)
 
 	log.Println("✅ Server started on http://localhost:8001")
 	engine.Run(":8001")

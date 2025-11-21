@@ -14,10 +14,15 @@ type Router struct {
 
 // Constructor
 func NewRouter(engine *gin.Engine, userService *services.SignupService, loginService *services.LoginService, fileService *services.FileAnalyzerService) *Router {
-	return &Router{
+	r := &Router{
 		Engine:       engine,
 		UserService:  userService,
 		LoginService: loginService,
 		FileService:  fileService,
 	}
+
+	r.DefineRoutes()
+
+	return r
 }
+

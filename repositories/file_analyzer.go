@@ -1,38 +1,39 @@
 package repositories
 
 import (
-    "database/sql"
+	"database/sql"
 
-    "github.com/ali-hassan-Codes/file_analyzer_2/models"
+	"github.com/ali-hassan-Codes/file_analyzer_2/models"
 )
 
+type FileAnalyzerRepoInterface interface {
+	InsertFileInfo(file models.FileInfo) error
+}
+
 type FileAnalyzerRepository struct {
-    DB *sql.DB
+	DB *sql.DB
 }
 
 func NewFileAnalyzerRepository(db *sql.DB) *FileAnalyzerRepository {
-    return &FileAnalyzerRepository{DB: db}
+	return &FileAnalyzerRepository{DB: db}
 }
 
-
-
-// Insert file analysis record
 func (repo *FileAnalyzerRepository) InsertFileInfo(file models.FileInfo) error {
-    query := `
+	query := `
         INSERT INTO file_info
         (file_name, paragraphs, line_count, word_count, char_count, alphabetic, digits, vowels, non_vowels)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
-    _, err := repo.DB.Exec(query,
-        file.FileName,
-        file.Paragraphs,
-        file.LineCount,
-        file.WordCount,
-        file.CharCount,
-        file.Alphabetic,
-        file.Digits,      // updated field name
-        file.Vowels,
-        file.NonVowels,
-    )
-    return err
+	_, err := repo.DB.Exec(query,
+		file.FileName,
+		file.Paragraphs,
+		file.LineCount,
+		file.WordCount,
+		file.CharCount,
+		file.Alphabetic,
+		file.Digits,
+		file.Vowels,
+		file.NonVowels,
+	)
+	return err
 }
