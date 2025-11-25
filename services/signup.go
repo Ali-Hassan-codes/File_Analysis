@@ -13,12 +13,19 @@ type ISignupService interface {
 
 // Concrete struct
 type SignupService struct {
-	repo repositories.UserRepository
+	repo repositories.UserRepositoryInterface
 }
 
-// Constructor: receives a struct, returns interface
-func NewSignupService(s SignupService) ISignupService {
-	return &s
+// Dependency struct for constructor
+type SignupServiceDeps struct {
+	Repo repositories.UserRepositoryInterface
+}
+
+// Constructor accepts dependency struct, returns interface
+func NewSignupService(deps SignupServiceDeps) ISignupService {
+	return &SignupService{
+		repo: deps.Repo,
+	}
 }
 
 // Business logic

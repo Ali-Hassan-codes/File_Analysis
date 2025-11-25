@@ -10,20 +10,29 @@ import (
 	"github.com/ali-hassan-Codes/file_analyzer_2/repositories"
 )
 
+// Interface
 type IFileAnalyzerService interface {
 	AnalyzeFile(filePath string) (models.FileInfo, error)
 }
 
-// Service
+// Concrete service
 type FileAnalyzerService struct {
-	repo *repositories.FileAnalyzerRepository
+	repo repositories.FileAnalyzerRepoInterface
 }
 
-func NewFileAnalyzerService(repo *repositories.FileAnalyzerRepository) *FileAnalyzerService {
-	return &FileAnalyzerService{repo: repo}
+// Dependency struct
+type FileAnalyzerServiceDeps struct {
+	Repo repositories.FileAnalyzerRepoInterface
 }
 
-// AnalyzeFile reads the file, calculates stats, and saves to DB
+// Constructor - returns interface
+func NewFileAnalyzerService(deps FileAnalyzerServiceDeps) IFileAnalyzerService {
+	return &FileAnalyzerService{
+		repo: deps.Repo,
+	}
+}
+
+// Business logic
 func (s *FileAnalyzerService) AnalyzeFile(filePath string) (models.FileInfo, error) {
 	file, err := os.Open(filePath)
 	if err != nil {

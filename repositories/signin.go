@@ -20,6 +20,7 @@ func NewUserRepository(db *sql.DB) UserRepositoryInterface {
 	return &UserRepository{DB: db}
 }
 
+
 func (repo *UserRepository) CreateUser(user models.User) (models.User, error) {
 	query := "INSERT INTO users (name, email, password) VALUES (?, ?, ?)"
 	_, err := repo.DB.Exec(query, user.Name, user.Email, user.Password)

@@ -13,18 +13,28 @@ import (
 func StartServer() {
 	database := db.InitDb()
 
+	// User repository
 	userRepo := repositories.NewUserRepository(database)
-	userService := services.NewSignupService(userRepo)
 
-	// Login service
-	loginService := services.NewLoginService(userRepo)
+	// Signup service - pass dependency struct, returns interface
+	userService := services.NewSignupService(services.SignupServiceDeps{
+		Repo: userRepo,
+	})
+
+	// Login service (use same pattern if using interface)
+	loginService := services.NewLoginService(services.LoginServiceDeps{
+		Repo: userRepo,
+	})
 
 	// File Analyzer service
 	fileRepo := repositories.NewFileAnalyzerRepository(database)
-	fileService := services.NewFileAnalyzerService(fileRepo)
+	fileService := services.NewFileAnalyzerService(services.FileAnalyzerServiceDeps{
+		Repo: fileRepo,
+	})
 
 	engine := gin.Default()
 
+	// Router now accepts interfaces
 	routes.NewRouter(engine, userService, loginService, fileService)
 
 	log.Println("✅ Server started on http://localhost:8001")

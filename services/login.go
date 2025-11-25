@@ -8,19 +8,29 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Interface
 type ILoginService interface {
 	Login(email, password string) (models.User, error)
 }
 
-// Service
+// Concrete struct
 type LoginService struct {
-	repo *repositories.UserRepository
+	repo repositories.UserRepositoryInterface
 }
 
-func NewLoginService(repo *repositories.UserRepository) *LoginService {
-	return &LoginService{repo: repo}
+// Dependency struct
+type LoginServiceDeps struct {
+	Repo repositories.UserRepositoryInterface
 }
 
+// Constructor - returns interface
+func NewLoginService(deps LoginServiceDeps) ILoginService {
+	return &LoginService{
+		repo: deps.Repo,
+	}
+}
+
+// Business logic
 func (s *LoginService) Login(email, password string) (models.User, error) {
 	user, err := s.repo.GetByEmail(email)
 	if err != nil {
