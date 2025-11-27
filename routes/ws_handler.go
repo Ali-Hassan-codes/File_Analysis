@@ -15,33 +15,30 @@ var upgrader = websocket.Upgrader{
 
 // WebSocketHandler upgrades connection and registers client into Hub
 func (r *Router) WebSocketHandler(c *gin.Context) {
-	// Get session ID from query param
-	sessionID := c.Query("session_id")
-	if sessionID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "session_id is required"})
-		return
-	}
+    sessionID := c.Query("session_id")
+    if sessionID == "" {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "session_id is required"})
+        return
+    }
 
-	// Upgrade HTTP → WebSocket
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		log.Println("WebSocket upgrade failed:", err)
-		return
-	}
+    conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+    if err != nil {
+        log.Println("WebSocket upgrade failed:", err)
+        return
+    }
 
-	// Create client with session ID
-	client := &ws.Client{
-		ID:   sessionID,
-		Hub:  ws.HubInstance,
-		Conn: conn,
-		Send: make(chan []byte),
-	}
+    client := &ws.Client{
+        ID:   sessionID,
+        Hub:  ws.HubInstance,
+        Conn: conn,
+        Send: make(chan []byte, 256),
+    }
 
-	// Register client in Hub
-	ws.HubInstance.Register <- client
+    // Register client
+    ws.HubInstance.Register <- client
+    log.Println("Client connected with session ID:", sessionID)
 
-	log.Println("Client connected with session ID:", sessionID)
-
-	// Handle outgoing messages
-	go client.WritePump()
+    // MUST RUN BOTH
+    go client.WritePump()
+    go client.ReadPump()
 }
