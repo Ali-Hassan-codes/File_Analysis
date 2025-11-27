@@ -8,9 +8,12 @@ import (
 	"github.com/ali-hassan-Codes/file_analyzer_2/routes"
 	"github.com/ali-hassan-Codes/file_analyzer_2/services"
 	"github.com/gin-gonic/gin"
+	"github.com/ali-hassan-Codes/file_analyzer_2/ws"
+
 )
 
 func StartServer() {
+	go ws.HubInstance.Run()
 	database := db.InitDb()
 
 	// User repository

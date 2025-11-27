@@ -20,8 +20,8 @@ func NewFileAnalyzerRepository(db *sql.DB) *FileAnalyzerRepository {
 
 func (repo *FileAnalyzerRepository) InsertFileInfo(file models.FileInfo) error {
 	query := `
-        INSERT INTO file_info
-        (file_name, paragraphs, line_count, word_count, char_count, alphabetic, digits, vowels, non_vowels)
+        INSERT INTO file_stats
+        (file_name, paragraphs, line_count, word_count, char_count, alphabetic, numeric_count, vowels, non_vowels)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
 	_, err := repo.DB.Exec(query,
@@ -31,7 +31,7 @@ func (repo *FileAnalyzerRepository) InsertFileInfo(file models.FileInfo) error {
 		file.WordCount,
 		file.CharCount,
 		file.Alphabetic,
-		file.Digits,
+		file.NumericCount, // updated
 		file.Vowels,
 		file.NonVowels,
 	)

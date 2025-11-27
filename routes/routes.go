@@ -9,10 +9,9 @@ func (r *Router) DefineRoutes() {
 	// Public routes
 	r.Engine.POST("/signup", r.SignupHandler)
 	r.Engine.POST("/login", r.LoginHandler)
-
-	// Protected routes
+	r.Engine.GET("/ws", r.WebSocketHandler)
 	auth := r.Engine.Group("/")
-	auth.Use(middleware.AuthMiddleware()) // ✅ middleware applied
+	auth.Use(middleware.AuthMiddleware())
 	{
 		auth.POST("/upload", r.FileAnalyzerHandler)
 	}

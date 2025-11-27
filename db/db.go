@@ -39,6 +39,6 @@ func runMigrations(db *sql.DB) error {
         return err
     }
 
-    log.Println("✅ Migrations applied successfully!")
+    log.Println("✅ Migrations applied successfully yes!")
     return nil
 }
